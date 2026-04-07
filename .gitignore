@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 /.node
+/.gh
+/bin
+/LICENSE
 /.pnp
 .pnp.*
 .yarn/*
