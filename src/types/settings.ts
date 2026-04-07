@@ -1,6 +1,6 @@
 import { type BankDetails, type Party } from './invoice';
 
-export interface CompanySettings extends Party {}
+export type CompanySettings = Party;
 
 export interface AppSettings {
   company: CompanySettings;

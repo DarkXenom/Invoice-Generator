@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { GSTStateSelect } from '@/components/shared/gst-state-select';
 import { useSettingsStore } from '@/stores/settings-store';
 import { GST_RATES } from '@/lib/constants';
-import { toast } from 'sonner';
 
 export default function SettingsPage() {
   const company = useSettingsStore(s => s.company);

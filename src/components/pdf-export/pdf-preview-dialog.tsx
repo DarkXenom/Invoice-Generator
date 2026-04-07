@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useState, useMemo } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { Download, X, Loader2 } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { type Invoice, type TaxBreakdown } from '@/types/invoice';

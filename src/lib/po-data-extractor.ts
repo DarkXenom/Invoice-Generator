@@ -3,7 +3,8 @@ import { type ParsedPurchaseOrder, type ParsedLineItem } from '@/types/purchase-
 const GSTIN_REGEX = /\d{2}[A-Z]{5}\d{4}[A-Z][A-Z\d]Z[A-Z\d]/g;
 const PO_NUMBER_REGEX = /(?:P\.?O\.?\s*(?:No|Number|#|Ref)?|Purchase\s*Order\s*(?:No|Number|#)?)\s*[:\-.]?\s*([A-Z0-9\-\/]+)/i;
 const DATE_REGEX = /(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{1,2}\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s*\d{2,4})/gi;
-const AMOUNT_REGEX = /(?:Rs\.?|INR|₹)\s*([\d,]+\.?\d*)/g;
+// Available for future use: extract amounts like Rs. 1,234.56
+// const AMOUNT_REGEX = /(?:Rs\.?|INR|₹)\s*([\d,]+\.?\d*)/g;
 
 function extractGSTINs(text: string): string[] {
   return [...new Set(text.match(GSTIN_REGEX) || [])];

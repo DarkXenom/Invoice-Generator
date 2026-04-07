@@ -46,6 +46,7 @@ export function ImageUpload({
     <div className={cn('relative', className)}>
       {value ? (
         <div className="relative group">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt={label} className="max-h-24 object-contain" />
           <Button
             variant="destructive"

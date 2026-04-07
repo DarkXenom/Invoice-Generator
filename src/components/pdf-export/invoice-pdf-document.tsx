@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+// @react-pdf/renderer Image component doesn't support alt prop
 'use client';
 
 import { Document, Page, View, Text, Image } from '@react-pdf/renderer';

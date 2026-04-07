@@ -33,7 +33,8 @@ export function calculateLineItemTax(
   return { taxableAmount, cgstRate, cgstAmount, sgstRate, sgstAmount, igstRate, igstAmount, totalAmount };
 }
 
-export function calculateInvoiceTotals(lineItems: LineItem[], taxMode: TaxType): TaxBreakdown {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function calculateInvoiceTotals(lineItems: LineItem[], _taxMode: TaxType): TaxBreakdown {
   let subtotal = 0;
   let cgstTotal = 0;
   let sgstTotal = 0;
