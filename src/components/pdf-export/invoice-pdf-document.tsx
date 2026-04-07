@@ -2,10 +2,40 @@
 // @react-pdf/renderer Image component doesn't support alt prop
 'use client';
 
-import { Document, Page, View, Text, Image } from '@react-pdf/renderer';
+import { Document, Page, View, Text, Image, Font } from '@react-pdf/renderer';
 import { type Invoice, type TaxBreakdown } from '@/types/invoice';
 import { styles } from './pdf-styles';
 import { formatINR } from '@/lib/constants';
+
+// Register Noto Sans Devanagari for the ₹ symbol (U+20B9)
+// Helvetica doesn't include Indian Rupee glyph
+Font.register({
+  family: 'NotoSansSymbol',
+  fonts: [
+    {
+      src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans/files/noto-sans-devanagari-400-normal.woff2',
+      fontWeight: 400,
+    },
+    {
+      src: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans/files/noto-sans-devanagari-700-normal.woff2',
+      fontWeight: 700,
+    },
+  ],
+});
+
+/** Renders the ₹ symbol using a font that actually supports it */
+function RupeeSymbol({ bold, color, size }: { bold?: boolean; color?: string; size?: number }) {
+  return (
+    <Text style={{
+      fontFamily: 'NotoSansSymbol',
+      fontWeight: bold ? 700 : 400,
+      color: color || '#1a1a1a',
+      fontSize: size || 9,
+    }}>
+      {'\u20B9'}
+    </Text>
+  );
+}
 
 interface InvoicePDFDocumentProps {
   invoice: Invoice;
@@ -183,7 +213,9 @@ function PDFSummary({ invoice, totals }: { invoice: Invoice; totals: TaxBreakdow
 
           <View style={styles.grandTotalRow}>
             <Text style={styles.grandTotalLabel}>Grand Total</Text>
-            <Text style={styles.grandTotalValue}>{'\u20B9'} {fmt(totals.grandTotal)}</Text>
+            <Text style={styles.grandTotalValue}>
+              <RupeeSymbol bold color="#fff" size={10} />{' '}{fmt(totals.grandTotal)}
+            </Text>
           </View>
         </View>
       </View>
