@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState, useCallback } from 'react';
+import { Suspense, useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { InvoiceEditor } from '@/components/invoice/invoice-editor';
 import { POUploadZone } from '@/components/po-upload/po-upload-zone';
@@ -24,27 +24,24 @@ function CreateInvoiceContent() {
   const draftId = searchParams.get('draft');
   const [showUpload, setShowUpload] = useState(!draftId);
   const [showPDFPreview, setShowPDFPreview] = useState(false);
+  const initializedRef = useRef(false);
 
-  const setInvoice = useInvoiceStore(s => s.setInvoice);
-  const resetInvoice = useInvoiceStore(s => s.resetInvoice);
-  const updateHeader = useInvoiceStore(s => s.updateHeader);
-  const updateSupplier = useInvoiceStore(s => s.updateSupplier);
-  const updateBankDetails = useInvoiceStore(s => s.updateBankDetails);
-  const updateTerms = useInvoiceStore(s => s.updateTerms);
   const invoice = useInvoiceStore(s => s.invoice);
-  const loadDraft = useDraftsStore(s => s.loadDraft);
   const totals = useInvoiceTotals();
 
-  const settings = useSettingsStore(s => s.getSettings());
-  const generateNextInvoiceNumber = useSettingsStore(s => s.generateNextInvoiceNumber);
-
-  // Load draft or initialize new invoice
+  // Load draft or initialize new invoice — run once on mount
   useEffect(() => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    const { setInvoice, resetInvoice, updateHeader, updateSupplier, updateBankDetails, updateTerms } = useInvoiceStore.getState();
+    const { loadDraft } = useDraftsStore.getState();
+    const { generateNextInvoiceNumber, company, bankDetails: settingsBank, defaultTerms } = useSettingsStore.getState();
+
     if (draftId) {
       const draft = loadDraft(draftId);
       if (draft) {
         setInvoice(draft);
-        setShowUpload(false);
         toast.success('Draft loaded');
       } else {
         toast.error('Draft not found');
@@ -55,7 +52,6 @@ function CreateInvoiceContent() {
       const invoiceNumber = generateNextInvoiceNumber();
       updateHeader('invoiceNumber', invoiceNumber);
       // Set supplier info from settings
-      const company = settings.company;
       if (company.name) updateSupplier('name', company.name);
       if (company.address) updateSupplier('address', company.address);
       if (company.city) updateSupplier('city', company.city);
@@ -67,16 +63,14 @@ function CreateInvoiceContent() {
       if (company.phone) updateSupplier('phone', company.phone);
       if (company.email) updateSupplier('email', company.email);
       // Bank details
-      const bank = settings.bankDetails;
-      if (bank.bankName) updateBankDetails('bankName', bank.bankName);
-      if (bank.accountNumber) updateBankDetails('accountNumber', bank.accountNumber);
-      if (bank.ifscCode) updateBankDetails('ifscCode', bank.ifscCode);
-      if (bank.branchName) updateBankDetails('branchName', bank.branchName);
-      if (bank.accountType) updateBankDetails('accountType', bank.accountType);
+      if (settingsBank.bankName) updateBankDetails('bankName', settingsBank.bankName);
+      if (settingsBank.accountNumber) updateBankDetails('accountNumber', settingsBank.accountNumber);
+      if (settingsBank.ifscCode) updateBankDetails('ifscCode', settingsBank.ifscCode);
+      if (settingsBank.branchName) updateBankDetails('branchName', settingsBank.branchName);
+      if (settingsBank.accountType) updateBankDetails('accountType', settingsBank.accountType);
       // Terms
-      if (settings.defaultTerms) updateTerms(settings.defaultTerms);
+      if (defaultTerms) updateTerms(defaultTerms);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draftId]);
 
   const handleStartBlank = useCallback(() => {

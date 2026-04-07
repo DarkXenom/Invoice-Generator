@@ -6,10 +6,12 @@ import { Trash2, FileText, Plus } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useDraftsStore } from '@/stores/drafts-store';
+import { useHydration } from '@/hooks/use-hydration';
 import { formatINR } from '@/lib/constants';
 import { toast } from 'sonner';
 
 export default function DraftsPage() {
+  const hydrated = useHydration();
   const drafts = useDraftsStore(s => s.drafts);
   const loadDraftsList = useDraftsStore(s => s.loadDraftsList);
   const deleteDraft = useDraftsStore(s => s.deleteDraft);
@@ -40,7 +42,7 @@ export default function DraftsPage() {
         </Link>
       </div>
 
-      {drafts.length === 0 ? (
+      {!hydrated || drafts.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <FileText className="h-12 w-12 text-gray-300 mb-3" />

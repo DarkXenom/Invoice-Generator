@@ -5,9 +5,11 @@ import { useEffect } from 'react';
 import { Plus, FileText, Archive, Settings } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDraftsStore } from '@/stores/drafts-store';
+import { useHydration } from '@/hooks/use-hydration';
 import { formatINR } from '@/lib/constants';
 
 export default function DashboardPage() {
+  const hydrated = useHydration();
   const drafts = useDraftsStore(s => s.drafts);
   const loadDraftsList = useDraftsStore(s => s.loadDraftsList);
 
@@ -15,7 +17,7 @@ export default function DashboardPage() {
     loadDraftsList();
   }, [loadDraftsList]);
 
-  const recentDrafts = drafts.slice(0, 5);
+  const recentDrafts = hydrated ? drafts.slice(0, 5) : [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -47,7 +49,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <p className="font-semibold text-gray-900">Saved Drafts</p>
-                <p className="text-xs text-gray-500">{drafts.length} invoice{drafts.length !== 1 ? 's' : ''}</p>
+                <p className="text-xs text-gray-500">{hydrated ? drafts.length : 0} invoice{drafts.length !== 1 ? 's' : ''}</p>
               </div>
             </CardContent>
           </Card>
@@ -74,7 +76,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <p className="font-semibold text-gray-900">Total Invoices</p>
-              <p className="text-xs text-gray-500">{drafts.length} created</p>
+              <p className="text-xs text-gray-500">{hydrated ? drafts.length : 0} created</p>
             </div>
           </CardContent>
         </Card>

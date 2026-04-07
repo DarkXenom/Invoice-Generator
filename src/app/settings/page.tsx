@@ -8,9 +8,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { GSTStateSelect } from '@/components/shared/gst-state-select';
 import { useSettingsStore } from '@/stores/settings-store';
+import { useHydration } from '@/hooks/use-hydration';
 import { GST_RATES } from '@/lib/constants';
 
 export default function SettingsPage() {
+  const hydrated = useHydration();
   const company = useSettingsStore(s => s.company);
   const bankDetails = useSettingsStore(s => s.bankDetails);
   const invoicePrefix = useSettingsStore(s => s.invoicePrefix);
@@ -23,6 +25,17 @@ export default function SettingsPage() {
   const setInvoicePrefix = useSettingsStore(s => s.setInvoicePrefix);
   const setDefaultTerms = useSettingsStore(s => s.setDefaultTerms);
   const setDefaultTaxRate = useSettingsStore(s => s.setDefaultTaxRate);
+
+  if (!hydrated) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-gray-900">Settings</h2>
+          <p className="text-sm text-gray-500">Loading settings...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">

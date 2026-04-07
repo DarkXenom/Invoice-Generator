@@ -14,7 +14,6 @@ interface SettingsStore extends AppSettings {
   setDefaultTerms: (terms: string) => void;
   setDefaultTaxRate: (rate: number) => void;
   generateNextInvoiceNumber: () => string;
-  getSettings: () => AppSettings;
 }
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -41,11 +40,6 @@ export const useSettingsStore = create<SettingsStore>()(
         const number = generateInvoiceNumber(invoicePrefix, nextInvoiceSequence);
         set({ nextInvoiceSequence: nextInvoiceSequence + 1 });
         return number;
-      },
-
-      getSettings: () => {
-        const { company, bankDetails, invoicePrefix, nextInvoiceSequence, defaultTerms, defaultTaxRate } = get();
-        return { company, bankDetails, invoicePrefix, nextInvoiceSequence, defaultTerms, defaultTaxRate };
       },
     }),
     { name: 'omega_settings' }
