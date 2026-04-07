@@ -14,7 +14,11 @@
       "Read(//c/Program Files/**)",
       "Read(//c/Program Files \\(x86\\)/**)",
       "Bash(echo $PATH)",
-      "Bash(powershell.exe -Command \"Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")"
+      "Bash(powershell.exe -Command \"Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(export PATH=\"/d/Invoice Generator/.node:$PATH\")",
+      "Bash(npx next:*)"
     ]
   }
 }

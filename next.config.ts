@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  devIndicators: false,
+  turbopack: {},
+  webpack: (config) => {
+    // Fix for pdfjs-dist canvas dependency
+    config.resolve.alias.canvas = false;
+    return config;
+  },
 };
 
 export default nextConfig;

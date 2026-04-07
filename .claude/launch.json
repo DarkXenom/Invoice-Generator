@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "invoice-generator",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "D:/Invoice Generator/start-dev.cmd"],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}
